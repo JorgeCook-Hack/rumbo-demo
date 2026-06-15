@@ -576,6 +576,7 @@ const S={
   movQuery:'', receiptMov:null, extraMoves:{}, _ledger:null, _ledgerBiz:null,
   invoiceOpen:false, invoiceRfc:'', invoiceRequested:false,
   loads:{}, mermas:{}, mermaProd:null, mermaQty:1, mermaReason:'sobro',
+  extraPedidos:{}, pedCli:'', pedDia:'el jueves', pedCart:{}, pedError:false,
   stops:[
     {id:1,nm:'Comedor Doña Mary',     type:'comedor',addr:'Niños Héroes 214, Centro',  debt:340,done:false},
     {id:2,nm:'Abarrotes El Sol',      type:'tienda', addr:'Serdán 88, Centro',         debt:0,  done:false},
@@ -675,6 +676,7 @@ function genPedidos(){
     return {id:'ped'+i,cliente:PEDIDO_CLI[i],dia:PEDIDO_DAYS[i],items,total:items.reduce((a,it)=>a+it.qty,0)};
   });
 }
+function allPedidos(){ return (S.extraPedidos[biz().id]||[]).concat(genPedidos()); }
 
 /* ---------- merma del día (lo que sobró/devolvió/tiró, visual; persiste por negocio) ---------- */
 const MERMA_REASON={sobro:'Sobró',devuelto:'Devuelto',tiro:'Se tiró'};
@@ -810,11 +812,64 @@ function pedCard(p){
   </div>`;
 }
 function viewPedidos(){
-  const list=genPedidos();
+  const list=allPedidos();
   return `<div class="pad">
-    <div class="shead"><span class="t">Pedidos adelantados</span><span class="meta">${list.length} encargos</span></div>
+    <div class="shead"><span class="t">Pedidos adelantados</span><button class="merma-add" onclick="openPedido()">${I.plus}Tomar pedido</button></div>
     <div class="notice" style="margin-bottom:14px">${I.info}<p>Encargos <b>para días próximos</b>, aparte de la venta de hoy. Prepáralos y entrégalos el día acordado.</p></div>
     <div class="list">${list.map(pedCard).join('')}</div></div>`;
+}
+function pedTotalPiezas(){ return catalog().reduce((a,p)=>a+(S.pedCart[p.id]||0),0); }
+function openPedido(){
+  _sheetOpener=document.activeElement;
+  S.pedCli=''; S.pedDia='el jueves'; S.pedCart={}; S.pedError=false; S.sheet='pedido';
+  renderOverlay(); focusInto('#overlay #pedCli');
+}
+function pedidoSheet(){
+  const prods=catalog().map(p=>{
+    const q=S.pedCart[p.id]||0;
+    return `<div class="prod" data-pid="${p.id}">
+      <div class="pn"><b>${esc(p.nm)}</b><span>${money(p.price)} c/u</span></div>
+      <div class="stepper"><button onclick="stepPed('${p.id}',-1)" aria-label="Quitar uno">−</button>
+        <span class="qty" id="pq-${p.id}">${q}</span>
+        <button onclick="stepPed('${p.id}',1)" aria-label="Agregar uno">+</button></div>
+      <div class="lineprice ${q===0?'zero':''}" id="pl-${p.id}">${q===0?'—':q+' pz'}</div>
+    </div>`;
+  }).join('');
+  const diaSeg=[['el jueves','Jueves'],['el viernes','Viernes'],['el sábado','Sábado']].map(([v,l])=>`<button data-pd="${v}" aria-pressed="${S.pedDia===v}" onclick="setPedDia('${v}')">${l}</button>`).join('');
+  return `<div class="sheet" role="dialog" aria-modal="true" aria-label="Tomar pedido adelantado">
+    <div class="handle"></div>
+    <div class="sh-top"><div class="ti">Tomar pedido</div><div class="su">Encargo del cliente para un día próximo</div></div>
+    <div class="sh-body">
+      <div class="field"><label>¿Quién lo encarga?</label>
+        <input id="pedCli" class="${S.pedError?'err':''}" value="${esc(S.pedCli)}" oninput="onPedCli(this.value)" placeholder="Ej. Comedor Doña Mary">
+        <div class="errmsg" id="pedErr" style="display:${S.pedError?'flex':'none'}">${I.info}Escribe el nombre del comercio.</div></div>
+      <div class="blab">¿Para cuándo?</div>
+      <div class="seg2" id="pedseg">${diaSeg}</div>
+      <div class="blab">¿Qué encargó?</div>
+      ${prods}
+      <div class="totrow"><span class="l">Total del pedido</span><span class="v" id="pedTot">${pedTotalPiezas()} pz</span></div>
+    </div>
+    <div class="sh-foot"><button class="btn primary full" onclick="savePedido()">${I.check}Guardar pedido</button></div>
+  </div>`;
+}
+function onPedCli(v){ S.pedCli=v; if(S.pedError && v.trim()){ S.pedError=false; const n=$('pedCli'); if(n) n.classList.remove('err'); const e=$('pedErr'); if(e) e.style.display='none'; } }
+function setPedDia(v){ S.pedDia=v; document.querySelectorAll('#pedseg [data-pd]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.pd===v)); }
+function stepPed(id,d){
+  S.pedCart[id]=Math.max(0,(S.pedCart[id]||0)+d);
+  const q=S.pedCart[id];
+  if($('pq-'+id)) $('pq-'+id).textContent=q;
+  const lp=$('pl-'+id); if(lp){ lp.textContent=q===0?'—':q+' pz'; lp.classList.toggle('zero',q===0); }
+  if($('pedTot')) $('pedTot').textContent=pedTotalPiezas()+' pz';
+}
+function savePedido(){
+  const cli=S.pedCli.trim();
+  if(!cli){ S.pedError=true; const n=$('pedCli'); if(n) n.classList.add('err'); const e=$('pedErr'); if(e) e.style.display='flex'; return; }
+  const items=catalog().filter(p=>S.pedCart[p.id]>0).map(p=>({nm:p.nm,qty:S.pedCart[p.id]}));
+  if(!items.length){ toast('Agrega al menos un producto al pedido','wait'); return; }
+  const arr=(S.extraPedidos[biz().id]||(S.extraPedidos[biz().id]=[]));
+  arr.unshift({id:'pednew'+arr.length,cliente:cli,dia:S.pedDia,items,total:items.reduce((a,it)=>a+it.qty,0)});
+  S.sheet=null; render(); renderOverlay(); refocus(_sheetOpener);
+  setTimeout(()=>toast('Pedido de '+cli+' guardado · para '+S.pedDia,'ok'),200);
 }
 
 /* ---- CARGA DEL DÍA (visible en Ruta; baja al entregar) ---- */
@@ -1059,6 +1114,7 @@ function renderOverlay(){
   else if(S.sheet==='new'){ host.innerHTML=scrim()+newSheet(); }
   else if(S.sheet==='merma'){ host.innerHTML=scrim()+mermaSheet(); }
   else if(S.sheet==='corp'){ host.innerHTML=scrim()+corpSheet(); }
+  else if(S.sheet==='pedido'){ host.innerHTML=scrim()+pedidoSheet(); }
   else { host.innerHTML=''; }
   renderTicket();
 }
