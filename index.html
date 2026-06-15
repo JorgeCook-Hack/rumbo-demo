@@ -16,15 +16,15 @@
    ============================================================ */
 :root{
   /* color del negocio · intercambiable (se reescribe en JS) */
-  --bc:#B85A2B; --bc-deep:#8E4220; --bc-tint:#F6E2D2;
+  --bc:#B85A2B; --bc-deep:#8E4220; --bc-tint:#F6E2D2; --bc-line:#EAD3BF;
   /* neutros · asfalto y masa */
-  --tinta:#1B1714; --asfalto:#221C17; --humo:#6E6357; --ceniza:#C9BCA6; --masa:#F3ECDD; --papel:#FCF8F0;
+  --asfalto:#221C17; --humo:#6E6357; --ceniza:#C9BCA6; --masa:#F3ECDD; --papel:#FCF8F0;
   --bezel:#14110E; --pagebg:#E7E0D2; --card:#FBF6EC;
   --line:#E6DCC9; --line-soft:#EDE4D4; --line-mute:#EFE8DA; --line-warm:#E0D6C2;
   --t-mute:#A89C88; --t-faint:#9A8E80; --t-label:#8E8576; --t-soft:#5A5046; --t-body:#3A332C;
   /* estado de la operación · reservados (NUNCA morosidad) */
   --senal:#2F7A4D; --senal-deep:#1F5C38; --senal-tint:#E0EEE2; --senal-line:#BFE0C8;
-  --espera:#D6932A; --espera-ink:#3A2A08;
+  --espera-ink:#3A2A08;
   --wa:#1FA855;
   --neg:#A8432C; /* solo devoluciones y error de captura — no es semáforo de saldo */
   /* radios · sombras (tinta cálida) */
@@ -58,7 +58,6 @@ input,select{font-family:inherit;font-size:15px;color:var(--asfalto)}
 @keyframes scrimIn{from{opacity:0}to{opacity:1}}
 @keyframes ticketDrop{from{transform:translateY(-118%) rotate(-1.4deg)}to{transform:translateY(0) rotate(-1.4deg)}}
 @keyframes toastIn{from{transform:translateY(150%);opacity:0}to{transform:translateY(0);opacity:1}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
 /* ============ LAYOUT / DEMO CHROME ============ */
 .page{max-width:1180px;margin:0 auto;padding:30px 24px 60px}
@@ -127,7 +126,7 @@ input,select{font-family:inherit;font-size:15px;color:var(--asfalto)}
 .donebanner b{font-family:var(--display);font-weight:700;font-size:15px;color:var(--senal-deep);line-height:1.2}
 
 .list{display:flex;flex-direction:column;gap:11px}
-.stop{background:var(--papel);border:1.5px solid var(--line);border-radius:var(--r-md);padding:13px 14px;display:flex;align-items:center;gap:13px;width:100%;box-shadow:var(--sh-sm);text-align:left;transition:transform .12s,box-shadow .18s}
+.stop{background:var(--papel);border:1.5px solid var(--line);border-radius:var(--r-md);padding:13px 14px;display:flex;align-items:center;gap:10px;width:100%;box-shadow:var(--sh-sm);text-align:left;transition:transform .12s,box-shadow .18s}
 .stop:hover{transform:translateY(-1px);box-shadow:var(--sh-md)}
 .stop:active{transform:translateY(0)}
 .stop.done{background:var(--masa);opacity:.62;box-shadow:none}
@@ -139,8 +138,8 @@ input,select{font-family:inherit;font-size:15px;color:var(--asfalto)}
 .stop .corp{font-size:10.5px;color:var(--bc-deep);font-weight:600;margin-top:3px}
 .stop .end{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
 .chip{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:7px;white-space:nowrap;background:var(--masa);color:var(--humo)}
-.chip.corp{background:var(--bc-tint);color:var(--bc-deep);border:1px solid #EAD3BF}
-.deb{font-size:12.5px;font-weight:700;color:var(--t-body);font-family:var(--mono)}
+.chip.corp{background:var(--bc-tint);color:var(--bc-deep);border:1px solid var(--bc-line)}
+.deb{font-size:11.5px;font-weight:700;color:var(--t-body);font-family:var(--mono)}
 .done-tag{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:700;color:var(--senal)}
 .done-tag svg{width:15px;height:15px}
 .chev{width:18px;height:18px;color:var(--ceniza)}
@@ -180,9 +179,9 @@ input,select{font-family:inherit;font-size:15px;color:var(--asfalto)}
 .statbox .v.sm{font-size:21px}
 .statbox .v.green{color:var(--senal)}
 .statbox .v small{font-size:14px;color:var(--t-mute);font-weight:600}
-.savenote{margin-top:16px;background:var(--bc-tint);border:1.5px solid #EAD3BF;border-radius:var(--r-md);padding:14px 15px;display:flex;gap:11px;align-items:flex-start}
+.savenote{margin-top:16px;background:var(--bc-tint);border:1.5px solid var(--bc-line);border-radius:var(--r-md);padding:14px 15px;display:flex;gap:11px;align-items:flex-start}
 .savenote svg{width:20px;height:20px;color:var(--bc-deep);flex:none;margin-top:1px}
-.savenote div{font-size:12.5px;line-height:1.5;color:#7A4A22}
+.savenote div{font-size:12.5px;line-height:1.5;color:var(--bc-deep)}
 
 /* corte */
 .repcut{background:var(--papel);border:1.5px solid var(--line);border-radius:var(--r-md);padding:14px}
@@ -268,18 +267,19 @@ input,select{font-family:inherit;font-size:15px;color:var(--asfalto)}
 .switch[aria-checked="true"]{background:var(--senal)}
 .switch i{position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(43,30,18,.18);transition:transform .2s}
 .switch[aria-checked="true"] i{transform:translateX(20px)}
+.switch::after{content:"";position:absolute;top:-10px;bottom:-10px;left:-12px;right:-12px} /* blanco tactil >=44px sin mover el riel */
 .subpanel{margin-top:10px;border-radius:13px;padding:13px 14px}
 .subpanel.plain{background:var(--masa);border:1.5px solid var(--line)}
-.subpanel.amber{background:var(--bc-tint);border:1.5px solid #EAD3BF}
+.subpanel.amber{background:var(--bc-tint);border:1.5px solid var(--bc-line)}
 .subpanel label{font-size:12px;font-weight:700;display:block;margin-bottom:7px;color:var(--humo)}
 .subpanel.amber label{color:var(--bc-deep)}
 .retsel{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:11px 12px;background:var(--papel);font-weight:600;font-size:14px;color:var(--asfalto)}
 .retqty{display:flex;align-items:center;justify-content:space-between;margin-top:11px}
 .retqty span{font-size:13px;color:var(--humo);font-weight:600}
 .seg2{display:flex;background:var(--masa);border:1.5px solid var(--line);border-radius:11px;padding:4px}
-.seg2 button{flex:1;padding:8px 4px;border-radius:8px;font-weight:700;font-size:12.5px;color:var(--humo);transition:all .16s}
+.seg2 button{flex:1;min-height:44px;padding:8px 4px;border-radius:8px;font-weight:700;font-size:12.5px;color:var(--humo);transition:all .16s}
 .seg2 button[aria-pressed="true"]{background:var(--papel);color:var(--asfalto);box-shadow:0 1px 2px rgba(43,30,18,.08)}
-.owe-input{display:flex;align-items:center;background:var(--papel);border:1.5px solid #EAD3BF;border-radius:10px;padding:9px 12px}
+.owe-input{display:flex;align-items:center;background:var(--papel);border:1.5px solid var(--bc-line);border-radius:10px;padding:9px 12px}
 .owe-input .pre{color:var(--bc-deep);font-weight:800;margin-right:4px;font-family:var(--mono)}
 .owe-input input{border:none;outline:none;width:100%;font-weight:700;font-size:16px;background:none;font-family:var(--mono)}
 .owe-sum{font-size:12.5px;color:var(--humo);margin-top:9px;line-height:1.4}
@@ -293,15 +293,15 @@ input,select{font-family:inherit;font-size:15px;color:var(--asfalto)}
 .loc-btn{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;border-radius:10px;padding:10px 13px;margin-top:8px;color:var(--bc-deep);background:var(--bc-tint)}
 .loc-btn.taken{color:var(--senal);background:var(--senal-tint)}
 .loc-btn svg{width:16px;height:16px}
-.notice{display:flex;gap:11px;background:var(--bc-tint);border:1.5px solid #EAD3BF;border-radius:13px;padding:13px}
+.notice{display:flex;gap:11px;background:var(--bc-tint);border:1.5px solid var(--bc-line);border-radius:13px;padding:13px}
 .notice svg{width:20px;height:20px;color:var(--bc-deep);flex:none}
-.notice p{margin:0;font-size:12.5px;line-height:1.45;color:#7A4A22}
+.notice p{margin:0;font-size:12.5px;line-height:1.45;color:var(--bc-deep)}
 .notice p b{color:var(--bc-deep)}
 
 /* comprobante digital (ticket) */
-.ticketwrap{position:absolute;inset:0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px}
+.ticketwrap{position:absolute;inset:0;z-index:30;display:flex;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:22px}
 .ticketwrap .veil{position:absolute;inset:0;background:rgba(14,16,20,.6);animation:scrimIn .26s ease}
-.tkcol{position:relative;z-index:2;width:262px}
+.tkcol{position:relative;z-index:2;width:262px;margin:auto} /* margin:auto centra cuando cabe; el wrap hace scroll cuando no */
 .ticket{position:relative;background:var(--papel);font-family:var(--mono);color:#1A1A1A;padding:20px 20px 24px;box-shadow:0 24px 60px rgba(0,0,0,.45);animation:ticketDrop .55s cubic-bezier(.2,.9,.25,1);transform:rotate(-1.4deg);--zig:7px}
 .ticket::before,.ticket::after{content:"";position:absolute;left:0;right:0;height:var(--zig);background:linear-gradient(135deg,var(--papel) 33.33%,transparent 33.33%) 0 0/var(--zig) var(--zig),linear-gradient(-135deg,var(--papel) 33.33%,transparent 33.33%) 0 0/var(--zig) var(--zig)}
 .ticket::before{top:calc(var(--zig) * -1)}
@@ -384,7 +384,7 @@ input,select{font-family:inherit;font-size:15px;color:var(--asfalto)}
 .carga-t{font-family:var(--display);font-weight:700;font-size:15px}
 .carga-meta{font-size:11.5px;color:var(--humo);font-weight:600}
 .carga-row{display:flex;align-items:center;gap:10px;padding:4px 0}
-.carga-nm{flex:none;width:108px;font-size:12.5px;font-weight:600;color:var(--t-body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.carga-nm{flex:none;width:124px;font-size:12.5px;font-weight:600;color:var(--t-body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .carga-bar{flex:1;height:7px;border-radius:999px;background:#E2D7C2;overflow:hidden}
 .carga-bar>i{display:block;height:100%;background:var(--bc);border-radius:999px;transition:width .45s cubic-bezier(.22,1,.36,1)}
 .carga-q{flex:none;width:62px;text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
@@ -398,7 +398,7 @@ input,select{font-family:inherit;font-size:15px;color:var(--asfalto)}
 .pedcard{background:var(--papel);border:1.5px solid var(--line);border-radius:var(--r-md);padding:14px;box-shadow:var(--sh-sm)}
 .ped-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
 .ped-cli{font-family:var(--display);font-weight:700;font-size:15.5px;line-height:1.15}
-.ped-dia{flex:none;display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;color:var(--bc-deep);background:var(--bc-tint);border:1px solid #EAD3BF;border-radius:8px;padding:4px 8px;white-space:nowrap;transition:color .35s,background .35s}
+.ped-dia{flex:none;display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;color:var(--bc-deep);background:var(--bc-tint);border:1px solid var(--bc-line);border-radius:8px;padding:4px 8px;white-space:nowrap;transition:color .35s,background .35s}
 .ped-dia svg{width:13px;height:13px}
 .ped-items{font-size:13px;color:var(--t-soft);margin:9px 0 11px;line-height:1.45}
 .ped-foot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line-soft);padding-top:10px}
@@ -406,7 +406,7 @@ input,select{font-family:inherit;font-size:15px;color:var(--asfalto)}
 .ped-tot{font-family:var(--mono);font-weight:700;font-size:13.5px;color:var(--asfalto)}
 
 /* merma */
-.merma-add{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;color:var(--bc-deep);background:var(--bc-tint);border:1px solid #EAD3BF;border-radius:9px;padding:6px 11px;transition:color .35s,background .35s}
+.merma-add{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;color:var(--bc-deep);background:var(--bc-tint);border:1px solid var(--bc-line);border-radius:9px;padding:6px 11px;transition:color .35s,background .35s}
 .merma-add svg{width:15px;height:15px}
 .merma-row .h-end{display:flex;flex-direction:column;align-items:flex-end}
 .merma-row .h-end .h-sum{margin-top:0}
@@ -450,7 +450,9 @@ input,select{font-family:inherit;font-size:15px;color:var(--asfalto)}
   .brandtext .sub{display:none}
   .demolab{display:none}
   .democtrls{margin-left:auto;gap:8px;flex-wrap:nowrap}
-  .seg button{padding:8px 11px}
+  .seg button{padding:7px 9px}
+  .bizdot{width:22px;height:22px}
+  .bizpick{gap:4px;padding:3px}
   .stage{flex:1;min-height:0;display:block;gap:0}
   .phone{width:100%;height:100%;padding:0;background:none;border-radius:0;box-shadow:none}
   .screen{height:100%;min-height:0;border-radius:0}
@@ -591,6 +593,9 @@ const S={
     {id:'a2',nm:'Abarrotes Lupita',      ini:'A',by:'Mary',when:'ayer',sold:215},
   ],
 };
+/* baseline de paradas/aprobaciones (son globales, no por-marca): se restauran al cambiar de negocio */
+const STOPS_BASE=JSON.parse(JSON.stringify(S.stops));
+const APPROVALS_BASE=JSON.parse(JSON.stringify(S.approvals));
 
 /* ---------- helpers ---------- */
 const $=id=>document.getElementById(id);
@@ -643,13 +648,14 @@ function buildLedger(){
     if(r()<0.32){ const rp=cat[Math.floor(r()*cat.length)], qd=1+Math.floor(r()*3); out.push({stopId:stop.id,name:stop.nm,kind:'devolucion',ts:3+Math.floor(r()*8),items:[],total:qd*rp.price,pay:'',owed:0,paid:0,returned:{nm:rp.nm,qty:qd,price:rp.price}}); }
   });
   out.sort((a,b)=>a.ts-b.ts);
-  out.forEach((m,i)=>{ const dm=dateMinus(m.ts); m.id='m'+i; m.dateLabel=dm.label; m.dateFull=dm.full; m.dateGroup=groupLabel(m.ts); m.folio='A-00'+(139-i); });
+  out.forEach((m,i)=>{ const dm=dateMinus(m.ts); m.id='m'+i; m.dateLabel=dm.label; m.dateFull=dm.full; m.dateGroup=groupLabel(m.ts); m.folio='A-00'+(100+i); });
   S._ledger=out; S._ledgerBiz=biz().id; return out;
 }
 /* libro vivo = entregas de hoy (por marca) + base generada, ordenado por recencia */
 function ledger(){ const extra=(S.extraMoves[biz().id]||[]); return extra.concat(buildLedger()).slice().sort((a,b)=>a.ts-b.ts); }
 function movsFor(stopId){ return ledger().filter(m=>m.stopId===stopId); }
 function findMov(id){ return ledger().find(m=>m.id===id); }
+function nextFolioNum(){ return 100 + buildLedger().length + (S.extraMoves[biz().id]||[]).length; }
 
 /* ---------- carga del día (inventario en ruta, visual; persiste por negocio) ---------- */
 function genLoad(){
@@ -703,12 +709,8 @@ function corpData(){
 /* ---------- iconos ---------- */
 const I={
   netOn:'<svg viewBox="0 0 24 16" width="17" height="11" fill="none"><path d="M2 8a13 13 0 0 1 20 0" stroke="#F3ECDD" stroke-width="1.5" stroke-linecap="round"/><path d="M5.5 11.5a8 8 0 0 1 13 0" stroke="#F3ECDD" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="14" r="1.5" fill="#F3ECDD"/></svg>',
-  netOff:'<svg viewBox="0 0 24 16" width="17" height="11" fill="none" opacity=".55"><path d="M5.5 11.5a8 8 0 0 1 9-1.3" stroke="#F3ECDD" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="14" r="1.5" fill="#F3ECDD"/><path d="m3 3 18 11" stroke="#F3ECDD" stroke-width="1.5" stroke-linecap="round"/></svg>',
   battery:'<svg viewBox="0 0 24 16" width="19" height="13" fill="none"><rect x="1" y="3" width="19" height="10" rx="2.5" stroke="#F3ECDD" stroke-width="1.4"/><rect x="3" y="5" width="13" height="6" rx="1" fill="#F3ECDD"/><rect x="21" y="6" width="2" height="4" rx="1" fill="#F3ECDD"/></svg>',
-  wifiOff:'<svg viewBox="0 0 24 24" width="23" height="23" fill="none"><path d="M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M12 19.5h.01M3 3l18 18" stroke="#3A2A08" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  wifiOn:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none"><path d="M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M12 19.5h.01" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   check:'<svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  chev:'<svg viewBox="0 0 24 24" fill="none"><path d="m9 6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   search:'<svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
   shield:'<svg viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4M12 3l7 3v6c0 4-3 6.5-7 8-4-1.5-7-4-7-8V6l7-3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>',
   printer:'<svg viewBox="0 0 24 24" fill="none"><path d="M6 9V3h12v6M6 18H4v-7h16v7h-2M8 14h8v6H8z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>',
@@ -733,6 +735,7 @@ const I={
 function applyTheme(){
   const b=biz(), r=document.documentElement.style;
   r.setProperty('--bc',b.bc); r.setProperty('--bc-deep',b.deep); r.setProperty('--bc-tint',b.tint);
+  r.setProperty('--bc-line',b.deep+'40'); /* hairline tematizado: deep al ~25% alpha */
   $('brandBiz').textContent=b.name;
 }
 function renderBizPick(){
@@ -743,6 +746,7 @@ function renderBizPick(){
 function setBiz(i){
   if(i===S.bizIndex) return;
   S.bizIndex=i; S.cart={}; S.retId=catalog()[0].id; S.sheet=null; S.ticketOpen=false; S.receiptMov=null;
+  S.stops=JSON.parse(JSON.stringify(STOPS_BASE)); S.approvals=JSON.parse(JSON.stringify(APPROVALS_BASE));
   applyTheme(); renderBizPick(); render(); renderOverlay();
   toast(biz().name+' · la app se vistió sola','ok');
 }
@@ -972,9 +976,11 @@ function mermaRow(m){
 /* ---- CORTE (oficina) ---- */
 function viewCorte(){
   const colors=[biz().bc,'#3A332C','#6E6357'];
+  const ent=S.stops.filter(s=>s.type!=='corp');
+  const liveParadas=ent.filter(s=>s.done).length+'/'+ent.length; /* Luis (REPS[0]) es el dueño de la ruta demo */
   const cards=REPS.map((r,i)=>`<div class="repcut">
     <div class="top"><div class="ava" style="background:${colors[i]||'#6E6357'}">${esc(r.ini)}</div>
-      <div><div class="nm">${esc(r.nm)}</div><div class="zone">${esc(r.zone)} · ${r.paradas} paradas</div></div></div>
+      <div><div class="nm">${esc(r.nm)}</div><div class="zone">${esc(r.zone)} · ${i===0?liveParadas:r.paradas} paradas</div></div></div>
     <div class="nums">
       <div><div class="k">Entregó</div><div class="v">${money(r.entreg)}</div></div>
       <div><div class="k">Cobró</div><div class="v green">${money(r.cobr)}</div></div>
@@ -1170,7 +1176,7 @@ function deliverSheet(){
       <div id="retPanel" style="display:${S.returning?'block':'none'}">
         <div class="subpanel plain">
           <label>¿Qué devolvió?</label>
-          <select class="retsel" id="retSel" onchange="onRetSelect(this.value)">${retOpts}</select>
+          <select class="retsel" id="retSel" aria-label="Qué devolvió" onchange="onRetSelect(this.value)">${retOpts}</select>
           <div class="retqty"><span>Cantidad devuelta</span>
             <div class="stepper"><button onclick="stepRet(-1)" aria-label="Quitar uno">−</button>
               <span class="qty" id="retQty">${S.retQty}</span>
@@ -1249,7 +1255,7 @@ function saveDelivery(){
     const net=netTotal();
     const owed=owes?Math.min(net,parseFloat(S.oweAmt)||0):0;
     const arr=(S.extraMoves[biz().id]||(S.extraMoves[biz().id]=[]));
-    arr.unshift({id:'t'+arr.length+'_'+S.activeStopId,stopId:S.activeStopId,name:stop.nm,kind:'venta',ts:0,dateLabel:'Hoy',dateFull:'16/06/2026 09:41',dateGroup:'Hoy',folio:'A-00'+(129+arr.length),items,total:net,pay:S.payMethod,owed,paid:Math.max(0,net-owed),returned});
+    arr.unshift({id:'t'+arr.length+'_'+S.activeStopId,stopId:S.activeStopId,name:stop.nm,kind:'venta',ts:0,dateLabel:'Hoy',dateFull:'16/06/2026 09:41',dateGroup:'Hoy',folio:'A-00'+(100+buildLedger().length+arr.length),items,total:net,pay:S.payMethod,owed,paid:Math.max(0,net-owed),returned});
   }
   const L=currentLoad();
   catalog().forEach(p=>{ const q=S.cart[p.id]||0; if(q>0&&L[p.id]) L[p.id].left=Math.max(0,L[p.id].left-q); });
@@ -1272,21 +1278,13 @@ function ticketData(){
   /* comprobante en vivo de la entrega de hoy */
   const stop=S.stops.find(s=>s.id===S.activeStopId)||S.stops[0];
   const chosen=catalog().filter(p=>S.cart[p.id]>0);
-  let items, net;
-  if(chosen.length>0){
-    items=chosen.map(p=>({q:String(S.cart[p.id]),d:p.nm,u:money(p.price),p:money(S.cart[p.id]*p.price),ret:false}));
-    net=netTotal();
-  } else {
-    const c=catalog();
-    const sample=[[c[0],12],[c[1],2],[c[c.length-1],1]].filter(x=>x[0]);
-    items=sample.map(([p,q])=>({q:String(q),d:p.nm,u:money(p.price),p:money(q*p.price),ret:false}));
-    net=sample.reduce((a,[p,q])=>a+q*p.price,0);
-  }
+  let items=chosen.map(p=>({q:String(S.cart[p.id]),d:p.nm,u:money(p.price),p:money(S.cart[p.id]*p.price),ret:false}));
+  let net=netTotal(); /* sin muestra de relleno: una entrega de pura devolucion da total 0 + la linea de devolucion */
   const ret=retValue();
   if(ret>0) items.push({q:'-'+S.retQty,d:catalog().find(p=>p.id===S.retId).nm+' (dev.)',u:'',p:'-'+money(ret),ret:true});
   const owe=S.owes?Math.min(net,parseFloat(S.oweAmt)||0):0;
   const now=Math.max(0,net-owe);
-  return {stop,items,net,owe,now,pay:S.payMethod,folio:'A-00128',date:'16/06/2026 09:41',hist:false,kind:'venta'};
+  return {stop,items,net,owe,now,pay:S.payMethod,folio:'A-00'+nextFolioNum(),date:'16/06/2026 09:41',hist:false,kind:'venta'};
 }
 function resetInvoice(){ S.invoiceOpen=false; S.invoiceRfc=''; S.invoiceRequested=false; }
 function openTicket(){ _ticketOpener=document.activeElement; S.receiptMov=null; resetInvoice(); S.ticketOpen=true; renderTicket(); focusInto('#ticketHost .btn.wa'); }
@@ -1303,7 +1301,7 @@ function ticketView(){
   const payRow=(isCobro||isDev)?'':`<div class="tk-pay"><span>Pago (${esc(payLabel(t.pay))})</span><span>${money(t.now)}</span></div>`;
   const actions=t.hist
     ? `<button class="btn wa flex" onclick="sendReceipt()">${I.wa}Reenviar</button><button class="tk-print" onclick="printReceipt()">${I.printer}Imprimir copia</button>`
-    : `<button class="btn wa flex" onclick="sendReceipt()">${I.wa}Enviar comprobante</button><button class="tk-print" onclick="printReceipt()">${I.printer}Imprimir</button>`;
+    : `<button class="btn wa flex" onclick="sendReceipt()">${I.wa}Enviar</button><button class="tk-print" onclick="printReceipt()">${I.printer}Imprimir</button>`;
   return `<div class="ticketwrap">
     <div class="veil" onclick="closeTicket()"></div>
     <div class="tkcol">
